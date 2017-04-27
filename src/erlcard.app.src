@@ -1,0 +1,10 @@
+{application, erlcard, [
+    {description, "Erlang credit card validation library"},
+    {vsn, "1.0"},
+    {registered, []},
+    {applications, [
+        kernel,
+        stdlib
+    ]},
+    {env, []}
+]}.
