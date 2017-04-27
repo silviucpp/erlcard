@@ -58,7 +58,7 @@
 
     #{
         type => ?CARD_TYPE_MASTERCARD,
-        pattern => <<"^(5[0-5]|2[2-7])">>,
+        pattern => <<"^(5[0-5]|2(2(2[1-9]|[3-9])|[3-6]|7(0|1|20)))">>,
         length => 16,
         cvc_length => 3,
         luhn => true
@@ -99,6 +99,14 @@
     #{
         type => ?CARD_TYPE_JCB,
         pattern => <<"^35">>,
+        length => 16,
+        cvc_length => 3,
+        luhn => true
+    },
+
+    #{
+        type => ?CARD_TYPE_HIPERCARD,
+        pattern => <<"^(606282\d{10}(\d{3})?)|(3841\d{15})$">>,
         length => 16,
         cvc_length => 3,
         luhn => true

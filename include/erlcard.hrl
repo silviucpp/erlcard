@@ -17,6 +17,7 @@
 -define(CARD_TYPE_DISCOVER, discover).
 -define(CARD_TYPE_UNIONPAY, unionpay).
 -define(CARD_TYPE_JCB, jcb).
+-define(CARD_TYPE_HIPERCARD, hipercard).
 
 -type card_type() :: atom().
 -type card_number() :: binary().

@@ -24,6 +24,7 @@ All available types that can be validated are available in `erlcard.hrl` :
 -define(CARD_TYPE_DISCOVER, discover).
 -define(CARD_TYPE_UNIONPAY, unionpay).
 -define(CARD_TYPE_JCB, jcb).
+-define(CARD_TYPE_HIPERCARD, hipercard).
 ```
 
 ##### Validate a card number knowing the type
