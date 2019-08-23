@@ -1,8 +1,7 @@
 -module(integrity_test_SUITE).
 
--author("silviu.caragea").
-
 -include_lib("common_test/include/ct.hrl").
+-include_lib("stdlib/include/assert.hrl").
 -include("erlcard.hrl").
 
 -compile(export_all).
@@ -18,39 +17,29 @@
     {?CARD_TYPE_FORBRUGSFORENINGEN, [
         <<"6007220000000004">>
     ]},
+
+    {?CARD_TYPE_DANKORT, [
+        <<"5019717010103742">>
+    ]},
+
     {?CARD_TYPE_VISA, [
         <<"4111111111111111">>,
         <<"4012888888881881">>,
         <<"4222222222222">>,
         <<"4462030000000000">>,
-        <<"4484070000000000">>
+        <<"4484070000000000">>,
+        <<"4921818425002311">>,
+        <<"4001919257537193">>,
+        <<"4987654321098769">>,
+        <<"4444333322221111455">>,
+        <<"4539935586467516275">>
     ]},
     {?CARD_TYPE_MASTERCARD, [
         <<"5555555555554444">>,
         <<"5454545454545454">>,
         <<"2221000002222221">>,
-        <<"2222000000000008">>,
-        <<"2223000000000007">>,
-        <<"2224000000000006">>,
-        <<"2225000000000005">>,
-        <<"2226000000000004">>,
-        <<"2227000000000003">>,
-        <<"2228000000000002">>,
-        <<"2229000000000001">>,
-        <<"2230000000000008">>,
-        <<"2240000000000006">>,
-        <<"2250000000000003">>,
-        <<"2260000000000001">>,
-        <<"2270000000000009">>,
-        <<"2280000000000007">>,
-        <<"2290000000000005">>,
-        <<"2300000000000003">>,
-        <<"2400000000000002">>,
-        <<"2500000000000001">>,
-        <<"2600000000000000">>,
-        <<"2700000000000009">>,
-        <<"2710000000000007">>,
-        <<"2720999999999996">>
+        <<"2223000010089800">>,
+        <<"2223000048400011">>
     ]},
     {?CARD_TYPE_AMEX, [
         <<"378282246310005">>,
@@ -76,18 +65,6 @@
     {?CARD_TYPE_JCB, [
         <<"3530111333300000">>,
         <<"3566002020360505">>
-    ]},
-    {?CARD_TYPE_HIPERCARD, [
-        <<"6062824440692130">>,
-        <<"6062822921732946">>,
-        <<"6062827980339442">>
-    ]}
-]).
-
--define(INVALID_CARDS, [
-    {?CARD_TYPE_MASTERCARD, [
-        <<"2220000000000000">>,
-        <<"2721000000000004">>
     ]}
 ]).
 
@@ -113,81 +90,79 @@ end_per_suite(_Config) ->
 test_card_types(_Config) ->
     Fun = fun({Type, Numbers}) ->
         FunValidate = fun(Number) ->
-            {ok, Number, Type} = erlcard:valid_credit_card(Number),
-            {ok, Number, Type} = erlcard:valid_credit_card(Number, Type)
-                      end,
-        ok = lists:foreach(FunValidate, Numbers)
-          end,
-    ok = lists:foreach(Fun, ?TEST_CARDS),
-    true.
-
-test_invalid_cards(_Config) ->
-    Fun = fun({Type, Numbers}) ->
-        FunValidate = fun(Number) ->
-            false = erlcard:valid_credit_card(Number),
-            false = erlcard:valid_credit_card(Number, Type)
+            ?assertEqual({ok, Number, Type}, erlcard:valid_credit_card(Number)),
+            ?assertEqual({ok, Number, Type}, erlcard:valid_credit_card(Number, Type))
         end,
         ok = lists:foreach(FunValidate, Numbers)
     end,
-    ok = lists:foreach(Fun, ?INVALID_CARDS),
+    ok = lists:foreach(Fun, ?TEST_CARDS),
     true.
 
 test_numbers(_Config) ->
+
     % Empty number
-    false = erlcard:valid_credit_card(<<>>),
+    ?assertEqual(false, erlcard:valid_credit_card(<<>>)),
 
     % Number with spaces
 
-    false = erlcard:valid_credit_card(<<"       ">>),
+    ?assertEqual(false, erlcard:valid_credit_card(<<"       ">>)),
 
     % Valid number
 
-    {ok, <<"4242424242424242">>, ?CARD_TYPE_VISA} = erlcard:valid_credit_card(<<"4242424242424242">>),
+    ?assertEqual({ok, <<"4242424242424242">>, ?CARD_TYPE_VISA}, erlcard:valid_credit_card(<<"4242424242424242">>)),
 
     % Valid number with dashes
 
-    {ok, <<"4242424242424242">>, ?CARD_TYPE_VISA} = erlcard:valid_credit_card(<<"4242-4242-4242-4242">>),
+    ?assertEqual({ok, <<"4242424242424242">>, ?CARD_TYPE_VISA}, erlcard:valid_credit_card(<<"4242-4242-4242-4242">>)),
 
     % Valid number with spaces
 
-    {ok, <<"4242424242424242">>, ?CARD_TYPE_VISA} = erlcard:valid_credit_card(<<"4242 4242 4242 4242">>),
+    ?assertEqual({ok, <<"4242424242424242">>, ?CARD_TYPE_VISA}, erlcard:valid_credit_card(<<"4242 4242 4242 4242">>)),
 
     % More than 16 digits
 
-    false = erlcard:valid_credit_card(<<"42424242424242424">>),
+    ?assertEqual(false, erlcard:valid_credit_card(<<"42424242424242424">>)),
 
     % Less than 10 digits
 
-    false = erlcard:valid_credit_card(<<"424242424">>),
+    ?assertEqual(false, erlcard:valid_credit_card(<<"424242424">>)),
+
+    % Valid predefined card type
+
+    ?assertEqual({ok, <<"4242424242424242">>, ?CARD_TYPE_VISA}, erlcard:valid_credit_card(<<"4242424242424242">>, ?CARD_TYPE_VISA)),
+
+    % Invalid any of predefined card types
+
+    ?assertEqual(false, erlcard:valid_credit_card(<<"4242424242424242">>, ?CARD_TYPE_MASTERCARD)),
 
     true.
 
 test_luhn(_Config) ->
-    false = erlcard:valid_credit_card(<<"4242424242424241">>),
+    ?assertEqual(false, erlcard:valid_credit_card(<<"4242424242424241">>)),
     true.
 
 test_cvc(_Config) ->
-    %empty
+    % empty
 
-    false = erlcard:valid_cvc(<<"">>, ?CARD_TYPE_VISA),
+    ?assertEqual(false, erlcard:valid_cvc(<<"">>, ?CARD_TYPE_VISA)),
 
-    %wrong type
+    % wrong type
 
-    false = erlcard:valid_cvc(<<"123">>, wrong_type),
+    ?assertEqual(false, erlcard:valid_cvc(<<"123">>, wrong_type)),
 
-    %valid
+    % valid
 
-    true = erlcard:valid_cvc(<<"123">>, ?CARD_TYPE_VISA),
+    ?assertEqual(true, erlcard:valid_cvc(<<"123">>, ?CARD_TYPE_VISA)),
 
-    %non digits
+    % non digits
 
-    false = erlcard:valid_cvc(<<"12e">>, ?CARD_TYPE_VISA),
+    ?assertEqual(false, erlcard:valid_cvc(<<"12e">>, ?CARD_TYPE_VISA)),
 
-    %less than 3 digits
+    % less than 3 digits
 
-    false = erlcard:valid_cvc(<<"12">>, ?CARD_TYPE_VISA),
+    ?assertEqual(false, erlcard:valid_cvc(<<"12">>, ?CARD_TYPE_VISA)),
 
-    %more than 3 digits
+    % more than 3 digits
 
-    false = erlcard:valid_cvc(<<"1234">>, ?CARD_TYPE_VISA),
+    ?assertEqual(false, erlcard:valid_cvc(<<"1234">>, ?CARD_TYPE_VISA)),
     true.

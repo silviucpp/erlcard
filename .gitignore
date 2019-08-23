@@ -3,3 +3,5 @@
 /ebin/
 /log/
 *.iml
+/_build/
+*.DS_Store

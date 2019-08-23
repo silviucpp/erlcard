@@ -2,9 +2,9 @@
  
 Validates popular debit and credit cards numbers against regular expressions and Luhn algorithm. Also validates the CVC. 
 
-### Instalation
+### Installation
 
-Add `erlcard` as a rebar dependency to your project:
+Add `erlcard` as a rebar or rebar3 dependency to your project:
 
 ```
 {deps, [
@@ -17,14 +17,17 @@ Add `erlcard` as a rebar dependency to your project:
 All available types that can be validated are available in `erlcard.hrl` :
 
 ```erlang
--define(CARD_TYPE_VISA, visa).
--define(CARD_TYPE_MASTERCARD, mastercard).
 -define(CARD_TYPE_AMEX, amex).
+-define(CARD_TYPE_DANKORT, dankort).
 -define(CARD_TYPE_DINERSCLUB, dinersclub).
 -define(CARD_TYPE_DISCOVER, discover).
--define(CARD_TYPE_UNIONPAY, unionpay).
+-define(CARD_TYPE_FORBRUGSFORENINGEN, forbrugsforeningen).
 -define(CARD_TYPE_JCB, jcb).
--define(CARD_TYPE_HIPERCARD, hipercard).
+-define(CARD_TYPE_MAESTRO, maestro).
+-define(CARD_TYPE_MASTERCARD, mastercard).
+-define(CARD_TYPE_UNIONPAY, unionpay).
+-define(CARD_TYPE_VISA, visa).
+-define(CARD_TYPE_VISAELECTRON, visaelectron).
 ```
 
 ##### Validate a card number knowing the type

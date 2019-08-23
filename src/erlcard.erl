@@ -1,7 +1,5 @@
 -module(erlcard).
 
--author("silviu.caragea").
-
 -include("erlcard.hrl").
 
 -export([
@@ -51,14 +49,14 @@
     #{
         type => ?CARD_TYPE_VISA,
         pattern => <<"^4">>,
-        length => [13, 16],
+        length => [13, 16, 19],
         cvc_length => 3,
         luhn => true
     },
 
     #{
         type => ?CARD_TYPE_MASTERCARD,
-        pattern => <<"^(5[0-5]|2(2(2[1-9]|[3-9])|[3-6]|7(0|1|20)))">>,
+        pattern => <<"^(5[0-5]|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720))">>,
         length => 16,
         cvc_length => 3,
         luhn => true
@@ -93,20 +91,12 @@
         pattern => <<"^(62|88)">>,
         length => [16, 17, 18, 19],
         cvc_length => 3,
-        luhn => true
+        luhn => false
     },
 
     #{
         type => ?CARD_TYPE_JCB,
         pattern => <<"^35">>,
-        length => 16,
-        cvc_length => 3,
-        luhn => true
-    },
-
-    #{
-        type => ?CARD_TYPE_HIPERCARD,
-        pattern => <<"^(606282\d{10}(\d{3})?)|(3841\d{15})$">>,
         length => 16,
         cvc_length => 3,
         luhn => true
@@ -130,10 +120,9 @@ valid_credit_card(CardNumber0, ExpectedCardType) ->
             false;
         _ ->
             case get_card_validation_rules(CardNumber, ?AVAILABLE_CARDS, ExpectedCardType) of
-                {ok, ValidationRules} ->
+                {ok, #{type := CardType} = ValidationRules} ->
                     case valid_card(CardNumber, ValidationRules) of
                         true ->
-                            #{type := CardType} = ValidationRules,
                             {ok, CardNumber, CardType};
                         _ ->
                             false
@@ -174,7 +163,7 @@ get_card_validation_rules_by_type([#{type := Type} = H | T], ExpectedType) ->
         get_card_validation_rules_by_type(T, ExpectedType)
     end;
 get_card_validation_rules_by_type([], _ExpectedType) ->
-        false.
+    false.
 
 get_card_validation_rules_by_number([#{pattern := Pattern} = H | T], Number) ->
     case valid_pattern(Number, Pattern) of
