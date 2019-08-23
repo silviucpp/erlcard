@@ -2,7 +2,8 @@
  
 [![Build Status](https://travis-ci.org/silviucpp/erlcard.svg?branch=master)](https://travis-ci.org/silviucpp/erlcard) 
  
-Validates popular debit and credit cards numbers against regular expressions and Luhn algorithm. Also validates the CVC. 
+Validates popular debit and credit cards numbers against regular expressions and [Luhn algorithm][1]. The library also 
+validates the CVC code. 
 
 ### Installation
 
@@ -54,5 +55,5 @@ true = erlcard:valid_cvc(<<"123">>, visa).
 
 You can run the tests using `make ct` from root directory.
 
-
+[1]:https://en.wikipedia.org/wiki/Luhn_algorithm
 
