@@ -1,10 +1,12 @@
 # erlcard
  
+[![Build Status](https://travis-ci.org/silviucpp/erlcard.svg?branch=master)](https://travis-ci.org/silviucpp/erlcard) 
+ 
 Validates popular debit and credit cards numbers against regular expressions and Luhn algorithm. Also validates the CVC. 
 
 ### Installation
 
-Add `erlcard` as a rebar or rebar3 dependency to your project:
+Add `erlcard` as a `rebar` or `rebar3` dependency to your project:
 
 ```
 {deps, [
