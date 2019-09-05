@@ -1,6 +1,9 @@
 # erlcard
  
-[![Build Status](https://travis-ci.org/silviucpp/erlcard.svg?branch=master)](https://travis-ci.org/silviucpp/erlcard) 
+[![Build Status](https://travis-ci.org/silviucpp/erlcard.svg?branch=master)](https://travis-ci.org/silviucpp/erlcard)
+![GitHub](https://img.shields.io/github/license/silviucpp/erlcard)
+![Hex.pm](https://img.shields.io/hexpm/v/erlcard)
+![Maintenance](https://img.shields.io/maintenance/yes/2019) 
  
 Validates popular debit and credit cards numbers against regular expressions and [Luhn algorithm][1]. The library also 
 validates the CVC code. 
