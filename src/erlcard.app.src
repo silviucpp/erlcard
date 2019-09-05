@@ -1,7 +1,7 @@
 {application, erlcard, [
     {description, "Erlang credit card validation library"},
     {licenses, ["MIT"]},
-    {vsn, "1.1.0"},
+    {vsn, "1.1.1"},
     {registered, []},
     {applications, [
         kernel,
@@ -16,6 +16,7 @@
         "rebar.lock",
         "include/*.hrl",
         "src/*.erl",
+        "src/*.src",
         "test/*.erl",
         "test/*.spec"
     ]}
