@@ -1,6 +1,6 @@
 # erlcard
  
-[![Build Status](https://travis-ci.com/silviucpp/erlcard.svg?branch=master)](https://travis-ci.com/silviucpp/erlcard)
+[![Build Status](https://travis-ci.com/silviucpp/erlcard.svg?branch=master)](https://travis-ci.com/github/silviucpp/erlcard)
 ![GitHub](https://img.shields.io/github/license/silviucpp/erlcard)
 ![Hex.pm](https://img.shields.io/hexpm/v/erlcard) 
  
