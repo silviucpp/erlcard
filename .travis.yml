@@ -5,24 +5,23 @@ matrix:
 
   include:
     - os: linux
-      dist: focal
-      otp_release: 24.0.2
-
-    - os: linux
-      dist: focal
-      otp_release: 23.1.2
-
-    - os: linux
       dist: bionic
-      otp_release: 22.3
+      otp_release: 25.3.2.6
 
-    - os: osx
-      osx_image: xcode12.2
-      language: generic
+    - os: linux
+      dist: focal
+      otp_release: 27.0
+
+    - os: linux
+      dist: jammy
+      otp_release: 26.1.1
 
 before_script:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-- if [[ $TRAVIS_OS_NAME == osx ]]; then brew install erlang || true; fi
-- curl https://s3.amazonaws.com/rebar3/rebar3 --output rebar3 && chmod +x rebar3
+
+  - curl https://s3.amazonaws.com/rebar3/rebar3 --output rebar3 && chmod +x rebar3
+
 script:
-    - ./rebar3 compile
+  - ./rebar3 compile
+
+after_success:
+  - make ct

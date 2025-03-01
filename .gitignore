@@ -1,6 +1,5 @@
 /.idea/
 /.rebar/
-/ebin/
 /log/
 *.iml
 /_build/

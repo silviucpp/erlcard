@@ -1,25 +1,24 @@
 # erlcard
- 
-[![Build Status](https://travis-ci.com/silviucpp/erlcard.svg?branch=master)](https://travis-ci.com/github/silviucpp/erlcard)
-![GitHub](https://img.shields.io/github/license/silviucpp/erlcard)
-![Hex.pm](https://img.shields.io/hexpm/v/erlcard) 
- 
-Validates popular debit and credit cards numbers against regular expressions and [Luhn algorithm][1]. The library also 
-validates the CVC code. 
 
-### Installation
+[![Build Status](https://app.travis-ci.com/silviucpp/erlcard.svg?branch=master)](https://travis-ci.com/github/silviucpp/erlcard)
+![GitHub License](https://img.shields.io/github/license/silviucpp/erlcard)
+![Hex.pm Version](https://img.shields.io/hexpm/v/erlcard)
 
-Add `erlcard` as a `rebar` or `rebar3` dependency to your project:
+`erlcard` is an Erlang library that validates popular debit and credit card numbers against regular expressions and the [Luhn algorithm][1]. It also supports validation of the CVC code.
 
-```
+## Installation
+
+To add `erlcard` as a dependency in your `rebar3` project, include the following in your `rebar.config`:
+
+```erlang
 {deps, [
-  {erlcard, ".*", {git, "https://github.com/silviucpp/erlcard.git", "master"}},
-}.
+  {erlcard, ".*", {git, "https://github.com/silviucpp/erlcard.git", "master"}}
+]}.
 ```
 
-### Usage
+## Usage
 
-All available types that can be validated are available in `erlcard.hrl` :
+All available card types are defined in `erlcard.hrl`:
 
 ```erlang
 -define(CARD_TYPE_AMEX, amex).
@@ -35,27 +34,32 @@ All available types that can be validated are available in `erlcard.hrl` :
 -define(CARD_TYPE_VISAELECTRON, visaelectron).
 ```
 
-##### Validate a card number knowing the type
+### Validating Card Numbers
+
+#### When the Card Type is Known
 
 ```erlang
 {ok, <<"5500005555555559">>, mastercard} = erlcard:valid_credit_card(<<"5500005555555559">>, mastercard).
-````
+```
 
-##### Validate a card number without knowing the type
+#### When the Card Type is Unknown
 
 ```erlang
 {ok, <<"5500005555555559">>, mastercard} = erlcard:valid_credit_card(<<"5500005555555559">>).
-````
+```
 
-##### Validate the CVC
+### Validating CVC Codes
 
 ```erlang
 true = erlcard:valid_cvc(<<"123">>, visa).
 ```
 
-### Tests
+## Running Tests
 
-You can run the tests using `make ct` from root directory.
+To execute the test suite, run the following command from the project's root directory:
 
-[1]:https://en.wikipedia.org/wiki/Luhn_algorithm
+```sh
+make ct
+```
 
+[1]: https://en.wikipedia.org/wiki/Luhn_algorithm
